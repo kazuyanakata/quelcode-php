@@ -31,11 +31,10 @@ if (is_numeric($limit) && $limit >= 1 && !preg_match("/^0/",$limit) && !preg_mat
       $array[] = $sum[$j];
     }
   }
-  if(isset($array)){
-    echo json_encode($array,JSON_NUMERIC_CHECK);
-  } else {
-    echo '[ ]';
+  if(!isset($array)){
+    $array = [];
   }
+  echo json_encode($array,JSON_NUMERIC_CHECK);
 } else {
   http_response_code(400);
   exit();
