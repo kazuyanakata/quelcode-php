@@ -40,4 +40,3 @@ if (is_numeric($limit) && $limit >= 1 && !preg_match("/^0/",$limit) && !preg_mat
   http_response_code(400);
   exit();
 }
-?>
