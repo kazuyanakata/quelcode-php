@@ -15,4 +15,3 @@ $array = $subArray;
 echo "<pre>";
 print_r($array);
 echo "</pre>";
-?>
