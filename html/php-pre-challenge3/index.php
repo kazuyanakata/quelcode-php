@@ -13,11 +13,11 @@ try {
 }
 
 // データベースから数値を取り出す
-$numbers = $db -> query('SELECT * FROM prechallenge3');
-$i = 0;
-while($number = $numbers -> fetch()){
-  $num[$i] = $number['value'];
-  $i++;
+$numbers = $db->prepare('SELECT value FROM prechallenge3 where (value <= :limit) order by value asc');
+$numbers->bindValue(':limit', $limit, PDO::PARAM_INT);
+$numbers->execute();
+while ($number = $numbers->fetch()) {
+  $num[] = $number['value'];
 }
 if (is_numeric($limit) && $limit >= 1 && !preg_match("/^0/",$limit) && !preg_match("/[.]/",$limit)){
   for($j=0;$j < 2**8-1 ;$j++){
