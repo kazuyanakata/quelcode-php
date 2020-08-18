@@ -24,9 +24,10 @@ $numbers->execute();
 while ($number = $numbers->fetch()) {
   $num[] = $number['value'];
 }
-for($j=0;$j < 2**8-1 ;$j++){
-  $str[$j] = str_split(sprintf('%08d',decbin($j + 1)));
-  for($k=0;$k <= 7;$k++){
+$length = count($num);
+for($j=0;$j < 2**$length-1 ;$j++){
+  $str[$j] = str_split(sprintf("%0${length}d",decbin($j + 1)));
+  for($k=0;$k < $length;$k++){
     if((int)$str[$j][$k] === 1){
       $sum[$j][] = $num[$k];
     } 
