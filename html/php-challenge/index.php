@@ -234,9 +234,30 @@ if ((int)$post['retweet_id'] === 0) {// 投稿が大元の投稿である場合
 	$retweetCounts->execute(array($post['retweet_id']));
 	$retweetCount = $retweetCounts->fetch();
 }
+
+$user_retweetCounts = $db->prepare('SELECT COUNT(*) AS cnt FROM posts WHERE retweet_id=? AND retweet_member_id=?');
+if ((int)$post['retweet_id'] === 0) {// 投稿が大元の投稿である場合
+	$user_retweetCounts->execute(array($post['id'], $member['id']));
+	$user_retweetCount = $user_retweetCounts->fetch();
+	// ログイン中のユーザーがその投稿をリツイートした数の抽出
+} else {// 投稿がリツイートである場合
+	$user_retweetCounts->execute(array($post['retweet_id'], $member['id']));
+	$user_retweetCount = $user_retweetCounts->fetch();
+	// ログイン中のユーザーがその投稿をリツイートした数を抽出
+}
+
+if ((int)$user_retweetCount['cnt'] === 0) {// ログイン中のユーザーがその投稿をリツイートしていない場合
 ?>
 			<a href="index.php?retweet=<?php echo h($post['id']);?>" style="text-decoration:none;margin: 0 10px">&crarr;
 			<span><?php echo $retweetCount['cnt'];?></span></a>
+<?php
+} elseif ((int)$user_retweetCount['cnt'] === 1) {// ログイン中のユーザーがその投稿をリツイートしている場合
+?>
+			<a href="index.php?retweet=<?php echo h($post['id']);?>" style="color:blue;text-decoration:none;margin: 0 10px">&crarr;
+			<span><?php echo $retweetCount['cnt'];?></span></a>
+			<!-- リツイートマークを青色に変更 -->
+<?php } ?>
+
 <?php 
 // いいね数のカウント
 $likeCounts = $db->prepare('SELECT COUNT(*) AS cnt FROM likes WHERE post_id=?');
