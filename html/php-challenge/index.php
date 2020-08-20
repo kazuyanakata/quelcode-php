@@ -227,7 +227,7 @@ endif;
 <?php 
 // リツイート数のカウント
 $retweetCounts = $db->prepare('SELECT COUNT(*) AS cnt FROM posts WHERE retweet_id=?');
-if ($post['retweet_id'] == 0) {// 投稿が大元の投稿である場合
+if ((int)$post['retweet_id'] === 0) {// 投稿が大元の投稿である場合
 	$retweetCounts->execute(array($post['id']));
 	$retweetCount = $retweetCounts->fetch();
 } else {// 投稿がリツイートである場合
@@ -240,7 +240,7 @@ if ($post['retweet_id'] == 0) {// 投稿が大元の投稿である場合
 <?php 
 // いいね数のカウント
 $likeCounts = $db->prepare('SELECT COUNT(*) AS cnt FROM likes WHERE post_id=?');
-if ($post['retweet_id'] == 0) {// 投稿が大元の投稿である場合
+if ((int)$post['retweet_id'] === 0) {// 投稿が大元の投稿である場合
 	$likeCounts->execute(array($post['id']));
 	$likeCount = $likeCounts->fetch();
 } else {// 投稿がリツイートである場合
@@ -249,7 +249,7 @@ if ($post['retweet_id'] == 0) {// 投稿が大元の投稿である場合
 }
 
 $user_likeCounts = $db->prepare('SELECT COUNT(*) AS cnt FROM likes WHERE member_id=? AND post_id=?');
-if ($post['retweet_id'] == 0) {// 投稿が大元の投稿である場合
+if ((int)$post['retweet_id'] === 0) {// 投稿が大元の投稿である場合
 	$user_likeCounts->execute(array($member['id'], $post['id']));
 	$user_likeCount = $user_likeCounts->fetch();
 	// ↑ログイン中のユーザーがその投稿をいいねした数を抽出
@@ -260,12 +260,12 @@ if ($post['retweet_id'] == 0) {// 投稿が大元の投稿である場合
 	// ↑ログイン中のユーザーがその投稿をいいねした数を抽出
 }
 
-if ($user_likeCount['cnt'] == 0) {// ログイン中のユーザーがその投稿をいいねしていない場合
+if ((int)$user_likeCount['cnt'] === 0) {// ログイン中のユーザーがその投稿をいいねしていない場合
 ?>
 			<a href="index.php?like=<?php echo h($post['id']);?>" style="text-decoration:none">&hearts;
 			<span><?php print($likeCount['cnt']);?></span></a>
 <?php 
-} elseif ($user_likeCount['cnt'] == 1) {// ログイン中のユーザーがその投稿をいいねしている場合
+} elseif ((int)$user_likeCount['cnt'] === 1) {// ログイン中のユーザーがその投稿をいいねしている場合
 ?>
 			<a href="index.php?like=<?php echo h($post['id']);?>" style="color:red;text-decoration:none">&hearts;
 			<!-- ハートマークを赤色に変更 -->
