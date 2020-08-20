@@ -65,12 +65,12 @@ if (isset($_REQUEST['retweet'])) {
 
 	$retweetCalculates = $db->prepare('SELECT COUNT(*) AS cal FROM posts WHERE retweet_id=? AND retweet_member_id=?');
 	if ((int)$retweet['retweet_id'] === 0) {// 投稿が大元の投稿である場合
-	$retweetCalculates->execute(array($retweet['id'], $member['id']));
-	$retweetCalculate = $retweetCalculates->fetch();
+		$retweetCalculates->execute(array($retweet['id'], $member['id']));
+		$retweetCalculate = $retweetCalculates->fetch();
 	// ↑ログイン中のメンバーがその投稿をリツイートした数の抽出
 	} elseif ((int)$retweet['retweet_id'] !== 0) {// 投稿がリツイートの投稿である場合
-	$retweetCalculates->execute(array($retweet['retweet_id'], $member['id']));
-	$retweetCalculate = $retweetCalculates->fetch();
+		$retweetCalculates->execute(array($retweet['retweet_id'], $member['id']));
+		$retweetCalculate = $retweetCalculates->fetch();
 	// ↑ログイン中のメンバーがその投稿をリツイートした数の抽出
 	}
 
@@ -197,14 +197,14 @@ foreach ($posts as $post):
 ?>
     <div class="msg">
     <img src="member_picture/<?php echo h($post['picture']); ?>" width="48" height="48" alt="<?php echo h($post['name']); ?>" />
-		<?php if ((int)$post['retweet_member_id'] !== 0) {// 投稿がリツイートだった場合
-			$retweet_members = $db->prepare('SELECT name FROM members WHERE id=?');
-			$retweet_members->execute(array($post['retweet_member_id']));
-			$retweet_member = $retweet_members->fetch();
-		?>
+<?php if ((int)$post['retweet_member_id'] !== 0) {// 投稿がリツイートだった場合
+				$retweet_members = $db->prepare('SELECT name FROM members WHERE id=?');
+				$retweet_members->execute(array($post['retweet_member_id']));
+				$retweet_member = $retweet_members->fetch();
+?>
 		<p class="day" style="font-size:13px"><?php echo h($retweet_member['name']);?>がリツイートしました</p>
 		<!-- ↑誰がリツイートしたか表示 -->
-		<?php } ?>
+<?php } ?>
     <p><?php echo makeLink(h($post['message'])); ?><span class="name">（<?php echo h($post['name']); ?>）</span>[<a href="index.php?res=<?php echo h($post['id']); ?>">Re</a>]</p>
     <p class="day"><a href="view.php?id=<?php echo h($post['id']); ?>"><?php echo h($post['created']); ?></a>
 		<?php
